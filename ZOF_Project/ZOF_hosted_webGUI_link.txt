@@ -1,4 +1,4 @@
-Name: [Your Name]
-Matric number: [Your Matric Number]
-Live URL of hosted application: [Link to your hosted application]
+Name: Akinfenwa Damilola Ezekiel
+Matric number: 22CG031824
+Live URL of hosted application: https://bisection-solver.onrender.com
 GitHub repository link: https://github.com/ezek-iel/bisection-solver
