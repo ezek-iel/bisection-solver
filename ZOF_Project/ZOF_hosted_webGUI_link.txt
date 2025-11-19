@@ -1,0 +1,4 @@
+Name: [Your Name]
+Matric number: [Your Matric Number]
+Live URL of hosted application: [Link to your hosted application]
+GitHub repository link: https://github.com/ezek-iel/bisection-solver

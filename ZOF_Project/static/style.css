@@ -1,0 +1,47 @@
+body {
+    font-family: sans-serif;
+    margin: 2em;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1em;
+    margin-bottom: 2em;
+}
+
+label {
+    grid-column: 1;
+}
+
+input, select, button {
+    grid-column: 2;
+    padding: 0.5em;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#results {
+    border: 1px solid #ccc;
+    padding: 1em;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    text-align: left;
+}

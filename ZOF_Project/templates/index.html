@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZOF Solver</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Zero of Functions (ZOF) Solver</h1>
+    <form action="/solve" method="post">
+        <label for="expression">Function f(x):</label>
+        <input type="text" id="expression" name="expression" value="x**3 - x - 2" required>
+
+        <label for="method">Method:</label>
+        <select id="method" name="method">
+            <option value="bisection">Bisection</option>
+            <option value="regula_falsi">Regula Falsi</option>
+            <option value="secant">Secant</option>
+            <option value="newton_raphson">Newton-Raphson</option>
+            <option value="fixed_point">Fixed Point Iteration</option>
+            <option value="modified_secant">Modified Secant</option>
+        </select>
+
+        <div id="params">
+            <label for="param1">a:</label>
+            <input type="number" id="param1" name="param1" value="1" step="any">
+            <label for="param2">b:</label>
+            <input type="number" id="param2" name="param2" value="2" step="any">
+        </div>
+
+        <div id="df-input" style="display: none;">
+            <label for="df">Derivative df(x):</label>
+            <input type="text" id="df" name="df" value="3*x**2 - 1">
+        </div>
+
+        <div id="g-input" style="display: none;">
+            <label for="g">Function g(x):</label>
+            <input type="text" id="g" name="g" value="(x + 2)**(1/3)">
+        </div>
+        
+        <div id="delta-input" style="display: none;">
+            <label for="delta">Delta:</label>
+            <input type="number" id="delta" name="delta" value="1e-6" step="any">
+        </div>
+
+        <label for="tol">Tolerance:</label>
+        <input type="number" id="tol" name="tol" value="1e-6" step="any">
+
+        <label for="max_iter">Max Iterations:</label>
+        <input type="number" id="max_iter" name="max_iter" value="100">
+
+        <button type="submit">Solve</button>
+    </form>
+
+    <div id="results">
+        {% if root is not none %}
+            <h2>Results for {{ method.replace('_', ' ').title() }} Method</h2>
+            <p><strong>Final Root:</strong> {{ root }}</p>
+            <p><strong>Final Error:</strong> {{ error }}</p>
+            <p><strong>Iterations:</strong> {{ iterations|length }}</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Iteration</th>
+                        <th>Root</th>
+                        <th>f(x)</th>
+                        <th>Error</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in iterations %}
+                        <tr>
+                            <td>{{ i[0] }}</td>
+                            <td>{{ i[1] }}</td>
+                            <td>{{ i[2] }}</td>
+                            <td>{{ i[3] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+
+    <script>
+        const methodSelect = document.getElementById('method');
+        const paramsDiv = document.getElementById('params');
+        const param1Label = document.querySelector('label[for="param1"]');
+        const param2Label = document.querySelector('label[for="param2"]');
+        const param1Input = document.getElementById('param1');
+        const param2Input = document.getElementById('param2');
+        const dfInput = document.getElementById('df-input');
+        const gInput = document.getElementById('g-input');
+        const deltaInput = document.getElementById('delta-input');
+
+        methodSelect.addEventListener('change', () => {
+            const method = methodSelect.value;
+            dfInput.style.display = 'none';
+            gInput.style.display = 'none';
+            deltaInput.style.display = 'none';
+            param1Input.style.display = 'inline-block';
+            param2Input.style.display = 'inline-block';
+            param1Label.style.display = 'inline-block';
+            param2Label.style.display = 'inline-block';
+
+
+            if (method === 'bisection' || method === 'regula_falsi') {
+                param1Label.textContent = 'a:';
+                param2Label.textContent = 'b:';
+            } else if (method === 'secant') {
+                param1Label.textContent = 'x0:';
+                param2Label.textContent = 'x1:';
+            } else if (method === 'newton_raphson') {
+                param1Label.textContent = 'x0:';
+                param2Input.style.display = 'none';
+                param2Label.style.display = 'none';
+                dfInput.style.display = 'block';
+            } else if (method === 'fixed_point') {
+                param1Label.textContent = 'x0:';
+                param2Input.style.display = 'none';
+                param2Label.style.display = 'none';
+                gInput.style.display = 'block';
+            } else if (method === 'modified_secant') {
+                param1Label.textContent = 'x0:';
+                param2Input.style.display = 'none';
+                param2Label.style.display = 'none';
+                deltaInput.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
